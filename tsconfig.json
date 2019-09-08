@@ -17,7 +17,7 @@
     "paths": {
       "app/*": ["src/scripts/app/*"],
       "vendor/*": ["src/scripts/vendor/*"],
-      "pixi-app-wrapper": ["src/scripts/vendor/dacaher/pixi-app-wrapper"],
+      "pixi-app-wrapper": ["src/scripts/third_party/pixi-app-wrapper"],
       "pixi-assets-loader": ["src/scripts/vendor/dacaher/pixi-assets-loader"],
       "fpsmeter": ["src/scripts/vendor/darsain/fpsmeter/fpsmeter"],
       "screenfull": ["src/scripts/vendor/sindresorhus/screenfull/screenfull"],
