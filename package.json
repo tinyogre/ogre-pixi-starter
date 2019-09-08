@@ -1,0 +1,20 @@
+{
+  "name": "ogre-pixi-starter",
+  "version": "1.0.0",
+  "description": "Starter package for pixi-js games\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[C\u001b[.\u001b[F",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pixi",
+    "pixijs",
+    "game",
+    "typescript"
+  ],
+  "author": "tinyogre",
+  "license": "MIT",
+  "dependencies": {
+    "pixi.js": "^5.1.2"
+  }
+}
