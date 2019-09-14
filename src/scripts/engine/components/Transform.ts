@@ -1,5 +1,5 @@
 import { Point } from "pixi.js";
-import { Component } from "./component";
+import { Component } from "../component";
 
 export class Transform extends Component {
     static cname = Transform.name;
