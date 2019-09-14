@@ -2,9 +2,10 @@ import { EntityManager } from "../EntityManager";
 import { SpriteComponent } from "../components/SpriteComponent";
 import { Entity } from "../entity";
 import { Transform } from "../components/Transform";
+import { System } from "../System";
 
-export class SpriteSystem {
-    constructor() {}
+export class SpriteSystem extends System {
+    constructor() { super(); }
     update(deltaTime: number) {
         let entities: Entity[] = EntityManager.instance.getAll(SpriteComponent);
         entities.forEach(e => {

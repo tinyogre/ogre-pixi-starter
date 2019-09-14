@@ -1,18 +1,18 @@
 import "pixi.js";
 import {
-    Dom,
     PixiAppWrapper,
     pixiAppWrapperEvent as WrapperEvent,
     PixiAppWrapperOptions as WrapperOpts,
 } from "pixi-app-wrapper";
 import { PixiAssetsLoader, Asset, AssetPriority, SoundAsset, LoadAsset } from "../third_party/pixi-assets-loader";
-import { Sprite, Texture, SCALE_MODES, Point } from "pixi.js";
+import { SCALE_MODES, Point } from "pixi.js";
 import { Entity } from "../engine/entity";
 import { SpriteComponent } from "../engine/components/SpriteComponent";
 import { Transform as TransformComponent } from "../engine/components/Transform";
 import { PhysicsSystem } from "../engine/systems/PhysicsSystem";
-import { EntityManager } from "../engine/EntityManager";
 import { SpriteSystem } from "../engine/systems/SpriteSystem";
+import { PlayerSystem } from "./PlayerSystem";
+import { Engine } from "../engine/Engine";
 
 export class OgreLanderTestApp {
     app: PixiAppWrapper;
@@ -23,10 +23,8 @@ export class OgreLanderTestApp {
     ];
     sound: Howl;
     player: Entity;
-    physicsSystem: PhysicsSystem;
-    entityManager: EntityManager;
-    spriteSystem: SpriteSystem;
-
+    engine: Engine;
+        
     constructor() {
         PIXI.settings.SCALE_MODE = SCALE_MODES.NEAREST;
         let type = "WebGL";
@@ -40,22 +38,24 @@ export class OgreLanderTestApp {
         this.loader = new PixiAssetsLoader();
         this.loader.on(PixiAssetsLoader.PRIORITY_GROUP_LOADED, this.onAssetsLoaded.bind(this));
         this.loader.addAssets(this.assets).load();
-        this.physicsSystem = new PhysicsSystem();
-        this.entityManager = new EntityManager();
-        this.spriteSystem = new SpriteSystem();
+
+        this.engine = new Engine();
+        
+        this.engine.add(new PhysicsSystem());
+        this.engine.add(new SpriteSystem());
+        this.engine.add(new PlayerSystem());
     }
 
     private startGame() {
-        this.entityManager = new EntityManager();
-        this.player = this.entityManager.createEntity();
+        this.player = this.engine.entityManager.createEntity();
         var sprite = this.player.add(SpriteComponent);
         var transform = this.player.add(TransformComponent);
-        transform.pos = new Point(200, 200);
+        
+        transform.pos = new Point(160, 0);
         this.player.get(SpriteComponent).sprite = PIXI.Sprite.from('lander');
         this.app.stage.addChild(this.player.get(SpriteComponent).sprite);
     
         this.app.ticker.add((dt) => this.update(dt));
-        this.app.ticker.add((dt) => this.moveMyHackyPlayer(dt));
     }
 
     //The `randomInt` helper function
@@ -64,19 +64,7 @@ export class OgreLanderTestApp {
     }
 
     private update(deltaTime: number) {
-        this.physicsSystem.update(deltaTime);
-        this.spriteSystem.update(deltaTime);
-    }
-
-    private moveMyHackyPlayer(deltaTime: number) {
-        if (this.player) {
-            var transform = this.player.get(TransformComponent);
-            transform.pos = new Point(this.randomInt(0, 320), this.randomInt(0, 240));
-            // var sc = this.player.get(SpriteComponent);
-            // if (sc.sprite) {
-            //     sc.sprite.position = transform.pos;
-            // }
-        }
+        this.engine.update(deltaTime);
     }
 
     private onAssetsLoaded(args: { priority: number, assets: LoadAsset[] }): void {
