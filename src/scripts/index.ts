@@ -1,5 +1,5 @@
 
 import "styles/style.css"; // Required to bundle styles!
 
-import {OgreStarterApp} from "app/ogre-starter-app";
-const ogreStarterApp = new OgreStarterApp();
+import {OgreLanderTestApp} from "app/ogre-lander-test-app";
+const ogreStarterApp = new OgreLanderTestApp();

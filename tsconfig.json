@@ -16,19 +16,10 @@
     ],
     "paths": {
       "app/*": ["src/scripts/app/*"],
-      "vendor/*": ["src/scripts/vendor/*"],
+      "engine": ["src/scripts/engine"],
       "pixi-app-wrapper": ["src/scripts/third_party/pixi-app-wrapper"],
       "pixi-assets-loader": ["src/scripts/vendor/dacaher/pixi-assets-loader"],
-      "fpsmeter": ["src/scripts/vendor/darsain/fpsmeter/fpsmeter"],
-      "screenfull": ["src/scripts/vendor/sindresorhus/screenfull/screenfull"],
-      "eventemitter3": ["src/scripts/vendor/primus/eventemitter3"],
-      "gsap": ["src/scripts/vendor/greensock/greensock-js"],
-      "pixi-layers": ["src/scripts/vendor/pixijs/pixi-layers/pixi-layers"],
-      "pixi-particles": ["src/scripts/vendor/pixijs/pixi-particles/pixi-particles"],
-      "pixi-spine": ["src/scripts/vendor/pixijs/pixi-spine/pixi-spine"],
-      "pixi-filters": ["src/scripts/vendor/pixijs/pixi-filters"],
-      "@pixi/filter-*": ["src/scripts/vendor/pixijs/pixi-filters/filters/filter-*"],
-      "howler": ["src/scripts/vendor/goldfire/howler.js"],
+      "howler": ["node_modules/howler/"],
       "typescript-collections/*": ["src/scripts/vendor/basarat/typescript-collections/*"],
       "pixi": ["node_modules/pixi.js"]
     }
