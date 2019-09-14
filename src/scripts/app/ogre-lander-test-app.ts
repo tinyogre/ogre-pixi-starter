@@ -5,7 +5,7 @@ import {
     PixiAppWrapperOptions as WrapperOpts,
 } from "pixi-app-wrapper";
 import { PixiAssetsLoader, Asset, AssetPriority, SoundAsset, LoadAsset } from "../third_party/pixi-assets-loader";
-import { SCALE_MODES, Point } from "pixi.js";
+import { SCALE_MODES, Point, Rectangle } from "pixi.js";
 import { Entity } from "../engine/entity";
 import { SpriteComponent } from "../engine/components/SpriteComponent";
 import { Transform as TransformComponent } from "../engine/components/Transform";
@@ -54,9 +54,12 @@ export class OgreLanderTestApp {
         this.player = this.engine.entityManager.createEntity();
         var sprite = this.player.add(SpriteComponent);
         var transform = this.player.add(TransformComponent);
-        this.player.add(PhysicsComponent);
-        
+        let physics = this.engine.get(PhysicsSystem);
         transform.pos = new Point(160, 0);
+        if (physics) {
+            physics.addBox(this.player, new Rectangle(0,0,32,32));
+        }
+        
         this.player.get(SpriteComponent).sprite = PIXI.Sprite.from('lander');
         this.app.stage.addChild(this.player.get(SpriteComponent).sprite);
     

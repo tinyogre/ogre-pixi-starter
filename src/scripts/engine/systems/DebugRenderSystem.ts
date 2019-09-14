@@ -2,6 +2,8 @@ import {System} from "../System";
 import { Point } from "pixi.js";
 import { Entity } from "../entity";
 import { DebugRenderComponent } from "../components/DebugRenderComponent";
+import { Transform } from "../components/Transform";
+
 export class DebugRenderSystem extends System {
     static sname = DebugRenderSystem.name;
 
@@ -13,6 +15,12 @@ export class DebugRenderSystem extends System {
     }
 
     update(deltaTime: number): void {
+        let es = this.engine.entityManager.getAll(DebugRenderComponent);
+        for (let e of es) {
+            let t = e.get(Transform);
+            let drc = e.get(DebugRenderComponent);
+            drc.g.position = t.pos;
+        }
     }
 
     addBox(e: Entity, ul: Point, size: Point, color: number) {
