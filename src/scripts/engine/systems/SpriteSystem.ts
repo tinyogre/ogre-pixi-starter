@@ -5,6 +5,7 @@ import { Transform } from "../components/Transform";
 import { System } from "../System";
 
 export class SpriteSystem extends System {
+    static sname: string = SpriteSystem.name;
     constructor() { super(); }
     update(deltaTime: number) {
         let entities: Entity[] = EntityManager.instance.getAll(SpriteComponent);

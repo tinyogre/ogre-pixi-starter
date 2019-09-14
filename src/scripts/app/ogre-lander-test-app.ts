@@ -13,6 +13,8 @@ import { PhysicsSystem } from "../engine/systems/PhysicsSystem";
 import { SpriteSystem } from "../engine/systems/SpriteSystem";
 import { PlayerSystem } from "./PlayerSystem";
 import { Engine } from "../engine/Engine";
+import { DebugRenderSystem } from "../engine/systems/DebugRenderSystem";
+import { PhysicsComponent } from "../engine/components/PhysicsComponent";
 
 export class OgreLanderTestApp {
     app: PixiAppWrapper;
@@ -41,21 +43,29 @@ export class OgreLanderTestApp {
 
         this.engine = new Engine();
         
-        this.engine.add(new PhysicsSystem());
-        this.engine.add(new SpriteSystem());
-        this.engine.add(new PlayerSystem());
+        this.engine.add(PhysicsSystem);
+        this.engine.add(SpriteSystem);
+        this.engine.add(PlayerSystem);
+        let debugRenderSystem = this.engine.add(DebugRenderSystem);
+        debugRenderSystem.stage = this.app.stage;
     }
 
     private startGame() {
         this.player = this.engine.entityManager.createEntity();
         var sprite = this.player.add(SpriteComponent);
         var transform = this.player.add(TransformComponent);
+        this.player.add(PhysicsComponent);
         
         transform.pos = new Point(160, 0);
         this.player.get(SpriteComponent).sprite = PIXI.Sprite.from('lander');
         this.app.stage.addChild(this.player.get(SpriteComponent).sprite);
     
         this.app.ticker.add((dt) => this.update(dt));
+
+        let p = this.engine.get(PhysicsSystem);
+        if (p) {
+            p.setDebug(true);
+        }
     }
 
     //The `randomInt` helper function

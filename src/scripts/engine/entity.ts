@@ -19,5 +19,15 @@ export class Entity {
         c.entity = this;
         return <T>c;
     }
+    getOrAdd<T extends Component>(type: IComponentType<T>) : T {
+        let c = this.get(type);
+        if (!c) {
+            c = this.add(type);
+        }
+        return c;
+    }
+    remove<T extends Component>(type: IComponentType<T>): void {
+        this.components.delete(type.cname);
+    }
 
 }
