@@ -12,7 +12,9 @@ export class SpriteSystem extends System {
         entities.forEach(e => {
             let s = e.get(SpriteComponent);
             if (s) {
-                s.sprite.position = e.get(Transform).pos;
+                let t = e.get(Transform);
+                s.sprite.position = t.pos;
+                s.sprite.rotation = t.rotation;
             }
         })
     }

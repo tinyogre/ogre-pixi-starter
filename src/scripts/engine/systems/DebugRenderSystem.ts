@@ -21,6 +21,7 @@ export class DebugRenderSystem extends System {
             let drc = e.get(DebugRenderComponent);
             if (drc) {
                 drc.g.position = t.pos;
+                drc.g.rotation = t.rotation;
             }
         }
     }

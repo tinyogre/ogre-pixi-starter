@@ -1,4 +1,4 @@
-import {b2World, b2Vec2, b2Body, b2BodyDef, b2PolygonShape, b2BodyType, XY} from "@flyover/box2d";
+import {b2World, b2Vec2, b2Body, b2BodyDef, b2PolygonShape, b2BodyType, XY, b2FixtureDef} from "@flyover/box2d";
 import {System} from "../System";
 import { Transform } from "../components/Transform"
 import { EntityManager } from "../EntityManager";
@@ -6,16 +6,17 @@ import { PhysicsComponent } from "../components/PhysicsComponent";
 import { DebugRenderSystem } from "./DebugRenderSystem";
 import { Point, Rectangle } from "pixi.js";
 import { Entity } from "../entity";
+import { Config } from "app/config"
 
 export class PhysicsSystem extends System {
     static sname = PhysicsSystem.name;
     world: b2World;
     ground: b2Body;
     debug: boolean;
-    
+
     constructor() {
         super();
-        let gravity: b2Vec2 = new b2Vec2(0, 5);
+        let gravity: b2Vec2 = new b2Vec2(0, Config.gravity);
         this.world = new b2World(gravity);
     }
 
@@ -26,8 +27,34 @@ export class PhysicsSystem extends System {
             var pc = e.get(PhysicsComponent);
             var t = e.get(Transform);
             let b2pos = pc.body.GetPosition();
-            t.pos = new Point(b2pos.x, b2pos.y);
+            let b2rotation = pc.body.GetAngle();
+            t.pos = this.unscalePoint(new Point(b2pos.x, b2pos.y));
+            t.rotation = b2rotation;
         }
+    }
+
+    private scaleRect(r: Rectangle) : Rectangle {
+        return new Rectangle(
+            r.x * Config.physicsScale,
+            r.y * Config.physicsScale,
+            r.width * Config.physicsScale,
+            r.height * Config.physicsScale);
+    }
+
+    private scalePoint(p: Point) : Point {
+        return new Point(p.x * Config.physicsScale, p.y * Config.physicsScale);
+    }
+
+    private unscaleRect(r: Rectangle) : Rectangle {
+        return new Rectangle(
+            r.x / Config.physicsScale,
+            r.y / Config.physicsScale,
+            r.width / Config.physicsScale,
+            r.height / Config.physicsScale);
+    }
+
+    private unscalePoint(p: Point): Point {
+        return new Point(p.x / Config.physicsScale, p.y / Config.physicsScale);
     }
 
     private addBoxInternal(r: PIXI.Rectangle, type: b2BodyType, pc: PhysicsComponent, t: Transform) {
@@ -43,9 +70,14 @@ export class PhysicsSystem extends System {
             {x: r.width, y: 0}
         ];
         box.Set(verts);
-        pc.bounds = new PIXI.Rectangle(0, 0, r.width, r.height);
-        pc.body.CreateFixture(box);
-        pc.body.SetPosition(new b2Vec2(t.pos.x + r.x, t.pos.y + r.y));
+        pc.bounds = this.unscaleRect(new PIXI.Rectangle(0, 0, r.width, r.height));
+        let fd = new b2FixtureDef();
+        fd.shape = box;
+        fd.density = 1.0;
+        fd.friction = 0.3;
+        pc.body.CreateFixture(fd);
+        let tPos = this.scalePoint(t.pos);
+        pc.body.SetTransformXY((t.pos.x + r.x) * Config.physicsScale, (t.pos.y + r.y) * Config.physicsScale, t.rotation);
     }
 
     createStatic(r: PIXI.Rectangle): Entity {
@@ -54,11 +86,12 @@ export class PhysicsSystem extends System {
         let t = e.add(Transform);
         t.pos = new Point(r.x, r.y);
         let rr = new PIXI.Rectangle(0, 0, r.width, r.height);
-        this.addBoxInternal(rr, b2BodyType.b2_staticBody, pc, t);
+        this.addBoxInternal(this.scaleRect(rr), b2BodyType.b2_staticBody, pc, t);
         return e;
     }
 
     addBox(e: Entity, rect: PIXI.Rectangle) {
+        rect = this.scaleRect(rect);
         let pc = e.getOrAdd(PhysicsComponent);
         let t = e.get(Transform);
         this.addBoxInternal(rect, b2BodyType.b2_dynamicBody, pc, t);

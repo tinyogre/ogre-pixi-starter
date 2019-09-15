@@ -1,6 +1,7 @@
 
 import {System} from "./System";
 import { EntityManager } from "./EntityManager";
+import { PixiAppWrapper } from "pixi-app-wrapper";
 
 export interface ISystemType<T extends System> {
     new(...args: any[]): T;
@@ -10,7 +11,12 @@ export interface ISystemType<T extends System> {
 export class Engine {
     systems: System[] = [];
     systemMap: Map<string, System> = new Map<string, System>();
+    app: PixiAppWrapper;
 
+    constructor(app: PixiAppWrapper) {
+        this.app = app;
+    }
+    
     public entityManager: EntityManager = new EntityManager();
 
     public update(deltaTime: number) {

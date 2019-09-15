@@ -8,7 +8,6 @@ import { PixiAssetsLoader, Asset, AssetPriority, SoundAsset, LoadAsset } from ".
 import { SCALE_MODES, Point, Rectangle } from "pixi.js";
 import { Entity } from "../engine/entity";
 import { SpriteComponent } from "../engine/components/SpriteComponent";
-import { Transform as TransformComponent } from "../engine/components/Transform";
 import { PhysicsSystem } from "../engine/systems/PhysicsSystem";
 import { SpriteSystem } from "../engine/systems/SpriteSystem";
 import { PlayerSystem } from "./PlayerSystem";
@@ -24,7 +23,6 @@ export class OgreLanderTestApp {
         {id: "lander", url: "assets/gfx/lander.png", priority: AssetPriority.HIGH, type: "texture"},
     ];
     sound: Howl;
-    player: Entity;
     engine: Engine;
         
     constructor() {
@@ -42,7 +40,7 @@ export class OgreLanderTestApp {
         this.loader.on(PixiAssetsLoader.PRIORITY_GROUP_LOADED, this.onAssetsLoaded.bind(this));
         this.loader.addAssets(this.assets).load();
 
-        this.engine = new Engine();
+        this.engine = new Engine(this.app);
         
         this.engine.add(PhysicsSystem);
         this.engine.add(SpriteSystem);
@@ -52,19 +50,10 @@ export class OgreLanderTestApp {
     }
 
     private startGame() {
-        this.player = this.engine.entityManager.createEntity();
-        var sprite = this.player.add(SpriteComponent);
-        var transform = this.player.add(TransformComponent);
         let physics = this.engine.get(PhysicsSystem);
-        transform.pos = new Point(160, 0);
-        if (physics) {
-            physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
-            physics.addBox(this.player, new Rectangle(0,0,32,32));
-        }
-        
-        this.player.get(SpriteComponent).sprite = PIXI.Sprite.from('lander');
-        this.app.stage.addChild(this.player.get(SpriteComponent).sprite);
-    
+        physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
+
+        this.engine.get(PlayerSystem).startGame();
         this.app.ticker.add((dt) => this.update(dt));
 
         let p = this.engine.get(PhysicsSystem);
