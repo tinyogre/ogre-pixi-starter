@@ -14,6 +14,7 @@ import { PlayerSystem } from "./PlayerSystem";
 import { Engine } from "../engine/Engine";
 import { DebugRenderSystem } from "../engine/systems/DebugRenderSystem";
 import { PhysicsComponent } from "../engine/components/PhysicsComponent";
+import { KeyboardSystem } from "../engine/KeyboardSystem";
 
 export class OgreLanderTestApp {
     app: PixiAppWrapper;
@@ -42,6 +43,7 @@ export class OgreLanderTestApp {
 
         this.engine = new Engine(this.app);
         
+        this.engine.add(KeyboardSystem);
         this.engine.add(PhysicsSystem);
         this.engine.add(SpriteSystem);
         this.engine.add(PlayerSystem);
