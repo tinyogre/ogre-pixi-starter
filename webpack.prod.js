@@ -3,7 +3,7 @@ const merge = require('webpack-merge');
 const path = require('path');
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const webpack = require('webpack');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+//const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -78,9 +78,9 @@ module.exports = merge(common, {
             allChunks: true,
             disable: false
         }),
-        new UglifyJSPlugin({
-            sourceMap: true
-        }),
+        // new UglifyJSPlugin({
+        //     sourceMap: true
+        // }),
         new SriPlugin({
             hashFuncNames: ['sha256', 'sha384']
         }),

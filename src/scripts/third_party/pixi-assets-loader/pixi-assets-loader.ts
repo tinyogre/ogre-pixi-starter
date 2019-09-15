@@ -1,5 +1,6 @@
 import {EventEmitter} from "eventemitter3";
 import {PriorityQueue} from "typescript-collections";
+import {Howl} from "howler";
 
 export interface Asset {
     id: string;
