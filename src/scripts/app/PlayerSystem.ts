@@ -29,10 +29,16 @@ export class PlayerSystem extends System {
         
     }
 
+    static rotate(v: b2Vec2, r: number): b2Vec2 {
+        let out = new b2Vec2;
+        return b2Vec2.RotateV(v, r, out);
+    }
+
     update(deltaTime: number): void {
         if (this.keyboard.isKeyDown(87)) {
             let pc = this.player.get(PhysicsComponent);
-            pc.body.ApplyForce(new b2Vec2(0, -1000), pc.body.GetWorldCenter());
+            let t = this.player.get(Transform);
+            pc.body.ApplyForce(PlayerSystem.rotate(new b2Vec2(0, -1000), t.rotation), pc.body.GetWorldCenter());
         }
     }
 }
