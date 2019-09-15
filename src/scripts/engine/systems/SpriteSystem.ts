@@ -11,7 +11,9 @@ export class SpriteSystem extends System {
         let entities: Entity[] = EntityManager.instance.getAll(SpriteComponent);
         entities.forEach(e => {
             let s = e.get(SpriteComponent);
-            s.sprite.position = e.get(Transform).pos;
+            if (s) {
+                s.sprite.position = e.get(Transform).pos;
+            }
         })
     }
 }

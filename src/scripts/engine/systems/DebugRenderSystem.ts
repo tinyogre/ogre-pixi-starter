@@ -19,7 +19,9 @@ export class DebugRenderSystem extends System {
         for (let e of es) {
             let t = e.get(Transform);
             let drc = e.get(DebugRenderComponent);
-            drc.g.position = t.pos;
+            if (drc) {
+                drc.g.position = t.pos;
+            }
         }
     }
 
@@ -31,6 +33,8 @@ export class DebugRenderSystem extends System {
         }
         g.lineStyle(1, color);
         g.drawRect(ul.x, ul.y, size.x, size.y);
+        g.lineStyle(1, 0xff0000);
+        g.drawRect(ul.x, ul.y, 1, 1);
         dc.addToStage(this.stage);
     }
 

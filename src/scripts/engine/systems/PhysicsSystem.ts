@@ -1,10 +1,10 @@
-import {b2World, b2Vec2, b2Body, b2BodyDef, b2PolygonShape, b2BodyType} from "@flyover/box2d";
+import {b2World, b2Vec2, b2Body, b2BodyDef, b2PolygonShape, b2BodyType, XY} from "@flyover/box2d";
 import {System} from "../System";
 import { Transform } from "../components/Transform"
 import { EntityManager } from "../EntityManager";
 import { PhysicsComponent } from "../components/PhysicsComponent";
 import { DebugRenderSystem } from "./DebugRenderSystem";
-import { Point } from "pixi.js";
+import { Point, Rectangle } from "pixi.js";
 import { Entity } from "../entity";
 
 export class PhysicsSystem extends System {
@@ -17,13 +17,6 @@ export class PhysicsSystem extends System {
         super();
         let gravity: b2Vec2 = new b2Vec2(0, 5);
         this.world = new b2World(gravity);
-        let groundDef: b2BodyDef = new b2BodyDef();
-        groundDef.position.Set(0, -10);
-        this.ground = this.world.CreateBody(groundDef);
-        let groundBox: b2PolygonShape = new b2PolygonShape();
-        groundBox.SetAsBox(320, 10);
-        this.ground.SetPosition(new b2Vec2(0, 240));
-        this.ground.CreateFixture(groundBox, 0);
     }
 
     update(deltaTime: number) {
@@ -37,19 +30,38 @@ export class PhysicsSystem extends System {
         }
     }
 
+    private addBoxInternal(r: PIXI.Rectangle, type: b2BodyType, pc: PhysicsComponent, t: Transform) {
+        let def = new b2BodyDef();
+        def.type = type;
+        def.position.Set(0, 0);
+        pc.body = this.world.CreateBody(def);
+        let box = new b2PolygonShape();
+        let verts:XY[] = [
+            {x: 0, y: 0},
+            {x: 0, y: r.height},
+            {x: r.width, y: r.height},
+            {x: r.width, y: 0}
+        ];
+        box.Set(verts);
+        pc.bounds = new PIXI.Rectangle(0, 0, r.width, r.height);
+        pc.body.CreateFixture(box);
+        pc.body.SetPosition(new b2Vec2(t.pos.x + r.x, t.pos.y + r.y));
+    }
+
+    createStatic(r: PIXI.Rectangle): Entity {
+        let e = this.engine.entityManager.createEntity();
+        let pc = e.add(PhysicsComponent);
+        let t = e.add(Transform);
+        t.pos = new Point(r.x, r.y);
+        let rr = new PIXI.Rectangle(0, 0, r.width, r.height);
+        this.addBoxInternal(rr, b2BodyType.b2_staticBody, pc, t);
+        return e;
+    }
+
     addBox(e: Entity, rect: PIXI.Rectangle) {
         let pc = e.getOrAdd(PhysicsComponent);
-        let def: b2BodyDef = new b2BodyDef();
-        def.type = b2BodyType.b2_dynamicBody;
-        def.position.Set(0,0);
-        let body = this.world.CreateBody(def);
-        let box = new b2PolygonShape();
-        box.SetAsBox(rect.width, rect.height);
-        pc.bounds = rect;
-        body.CreateFixture(box);
-        pc.body = body;
         let t = e.get(Transform);
-        pc.body.SetPosition(new b2Vec2(t.pos.x + rect.x, t.pos.y + rect.y));
+        this.addBoxInternal(rect, b2BodyType.b2_dynamicBody, pc, t);
     }
 
     setDebug(debug: boolean) {

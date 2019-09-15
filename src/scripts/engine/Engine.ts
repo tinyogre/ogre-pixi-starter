@@ -25,7 +25,7 @@ export class Engine {
         return <T>s;
     }
 
-    public get<T extends System>(type: ISystemType<T>) : T | undefined {
-        return <T | undefined>this.systemMap.get(type.sname);
+    public get<T extends System>(type: ISystemType<T>) : T {
+        return <T>this.systemMap.get(type.sname);
     }
 }

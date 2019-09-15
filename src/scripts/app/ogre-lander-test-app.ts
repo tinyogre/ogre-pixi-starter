@@ -29,6 +29,7 @@ export class OgreLanderTestApp {
         
     constructor() {
         PIXI.settings.SCALE_MODE = SCALE_MODES.NEAREST;
+        PIXI.settings.TARGET_FPMS = 60 / 1000;
         let type = "WebGL";
         if (!PIXI.utils.isWebGLSupported()) {
             type = "canvas";
@@ -57,6 +58,7 @@ export class OgreLanderTestApp {
         let physics = this.engine.get(PhysicsSystem);
         transform.pos = new Point(160, 0);
         if (physics) {
+            physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
             physics.addBox(this.player, new Rectangle(0,0,32,32));
         }
         
@@ -76,7 +78,10 @@ export class OgreLanderTestApp {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    private update(deltaTime: number) {
+    private update(deltaLunacy: number) {
+        // Pixi.js's "delta time" was created by a lunatic.  Convert it into
+        // a saner seconds passed deltaTime.
+        let deltaTime = (deltaLunacy / PIXI.settings.TARGET_FPMS) / 1000;
         this.engine.update(deltaTime);
     }
 
