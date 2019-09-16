@@ -7,11 +7,11 @@ import { PhysicsSystem } from "../engine/systems/PhysicsSystem";
 import { Entity } from "../engine/entity";
 import { PhysicsComponent } from "../engine/components/PhysicsComponent";
 import { b2Vec2 } from "@flyover/box2d";
-import { KeyboardSystem } from "../engine/KeyboardSystem";
+import { KeyboardSystem } from "../engine/systems/KeyboardSystem";
 import { Config } from "./config";
 
 export class PlayerSystem extends System {
-    static sname: string = PlayerSystem.name;
+    static sname: string = "player";
     player: Entity;
     keyboard: KeyboardSystem;
 

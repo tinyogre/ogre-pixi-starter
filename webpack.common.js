@@ -3,7 +3,7 @@
 We need this plugin to detect a `--watch` mode. It may be removed later
 after https://github.com/webpack/webpack/issues/3460 will be resolved.
 */
-const {CheckerPlugin} = require('awesome-typescript-loader');
+//const {CheckerPlugin} = require('ts-loader');//awesome-typescript-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const {TsConfigPathsPlugin} = require('awesome-typescript-loader');
@@ -18,12 +18,17 @@ module.exports = {
                 test: /\.js$/,
                 // use: ['source-map-loader'],
                 enforce: 'pre'
+            },
+            {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/
             }
         ]
     },
     devtool: 'source-map',
     plugins: [
-        new CheckerPlugin(),
+        // new CheckerPlugin(),
         new HtmlWebpackPlugin({
             title: 'My PIXI App',
             template: 'src/html/index.html',
@@ -38,7 +43,7 @@ module.exports = {
     // },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.css', '.scss', '.json'],
-        modules: ['node_modules'],
+        //modules: ['node_modules'],
         alias: {
             'styles': path.resolve(__dirname, 'src/styles/'),
             // 'vendor': path.resolve(__dirname, 'src/scripts/vendor/'),
@@ -52,9 +57,9 @@ module.exports = {
             // 'pixi-particles': path.resolve(__dirname, 'src/scripts/vendor/pixijs/pixi-particles/pixi-particles'),
             // 'pixi-spine': path.resolve(__dirname, 'src/scripts/vendor/pixijs/pixi-spine/pixi-spine'),
         },
-        plugins: [
-            new TsConfigPathsPlugin()
-        ],
+        // plugins: [
+        //     new TsConfigPathsPlugin()
+        // ],
     },
     stats: 'verbose',
 };

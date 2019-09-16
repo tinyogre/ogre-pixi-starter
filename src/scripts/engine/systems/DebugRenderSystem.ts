@@ -5,7 +5,7 @@ import { DebugRenderComponent } from "../components/DebugRenderComponent";
 import { Transform } from "../components/Transform";
 
 export class DebugRenderSystem extends System {
-    static sname = DebugRenderSystem.name;
+    static sname = "debugrender";
 
     stage: PIXI.Container;
 

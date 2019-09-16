@@ -6,10 +6,10 @@ import { PhysicsComponent } from "../components/PhysicsComponent";
 import { DebugRenderSystem } from "./DebugRenderSystem";
 import { Point, Rectangle } from "pixi.js";
 import { Entity } from "../entity";
-import { Config } from "app/config"
+import { Config } from "../../app/config"
 
 export class PhysicsSystem extends System {
-    static sname = PhysicsSystem.name;
+    static sname = "physics";
     world: b2World;
     ground: b2Body;
     debug: boolean;

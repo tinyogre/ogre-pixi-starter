@@ -1,6 +1,6 @@
 import EventEmitter = require("eventemitter3");
 import "fpsmeter";
-import {Dom, pixiAppWrapperEvent} from "pixi-app-wrapper";
+import {Dom, pixiAppWrapperEvent} from "./index";
 import * as PIXI from "pixi.js";
 window.PIXI = PIXI;
 import "pixi-layers";

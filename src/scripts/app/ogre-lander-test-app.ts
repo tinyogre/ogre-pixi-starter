@@ -3,7 +3,7 @@ import {
     PixiAppWrapper,
     pixiAppWrapperEvent as WrapperEvent,
     PixiAppWrapperOptions as WrapperOpts,
-} from "pixi-app-wrapper";
+} from "../third_party/pixi-app-wrapper";
 import { PixiAssetsLoader, Asset, AssetPriority, SoundAsset, LoadAsset } from "../third_party/pixi-assets-loader";
 import { SCALE_MODES, Point, Rectangle } from "pixi.js";
 import { Entity } from "../engine/entity";
@@ -14,7 +14,7 @@ import { PlayerSystem } from "./PlayerSystem";
 import { Engine } from "../engine/Engine";
 import { DebugRenderSystem } from "../engine/systems/DebugRenderSystem";
 import { PhysicsComponent } from "../engine/components/PhysicsComponent";
-import { KeyboardSystem } from "../engine/KeyboardSystem";
+import { KeyboardSystem } from "../engine/systems/KeyboardSystem";
 
 export class OgreLanderTestApp {
     app: PixiAppWrapper;
@@ -52,8 +52,10 @@ export class OgreLanderTestApp {
     }
 
     private startGame() {
-        let physics = this.engine.get(PhysicsSystem);
-        physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
+        let physics:PhysicsSystem = this.engine.get(PhysicsSystem);
+        console.log(physics);
+        console.log(physics.createStatic);
+        let e = physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
 
         this.engine.get(PlayerSystem).startGame();
         this.app.ticker.add((dt) => this.update(dt));

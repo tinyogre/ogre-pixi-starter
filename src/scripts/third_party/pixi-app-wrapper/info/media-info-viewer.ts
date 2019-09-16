@@ -1,4 +1,4 @@
-import {Dom} from "pixi-app-wrapper";
+import {Dom} from "../index";
 import "../util/math";
 
 export interface DisplayData {

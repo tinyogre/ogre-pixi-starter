@@ -15,11 +15,11 @@
       "src/types"
     ],
     "lib": ["es6", "dom"],
-    "types":[],
+    "types":["node"],
     "paths": {
       "app/*": ["src/scripts/app/*"],
       "engine": ["src/scripts/engine"],
-      "pixi-app-wrapper": ["src/scripts/third_party/pixi-app-wrapper"],
+      "pixi-app-wrapper": ["./src/scripts/third_party/pixi-app-wrapper"],
       "pixi-assets-loader": ["src/scripts/vendor/dacaher/pixi-assets-loader"],
       "howler": ["node_modules/howler/"],
       "typescript-collections/*": ["src/scripts/vendor/basarat/typescript-collections/*"],

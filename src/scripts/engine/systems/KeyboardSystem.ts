@@ -1,11 +1,11 @@
-import {System} from './System'
+import {System} from '../System'
 
 export class KeyboardSystem extends System {
+    static sname = "keyboard";
     states: Set<number>;
     update(deltaTime: number): void {
     }
 
-    static sname = KeyboardSystem.name;
     constructor() {
         super();
         window.onkeydown = (ev: KeyboardEvent) => this.onKeyDown(ev);

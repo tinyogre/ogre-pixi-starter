@@ -17,18 +17,6 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: 'awesome-typescript-loader',
-                        options: {
-                            configFileName: tsConfig
-                        }
-                    }
-                ],
-                exclude: /node_modules/
-            },
-            {
                 test: /\.css$/,
                 use: [
                     'style-loader',
@@ -70,7 +58,7 @@ module.exports = merge(common, {
     devServer: {
         contentBase: [
             path.join(__dirname, outputDir),
-            path.join(__dirname, 'node_modules'),
+            //path.join(__dirname, 'node_modules'),
         ],
         compress: false,
         host: '0.0.0.0',

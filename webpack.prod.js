@@ -5,7 +5,6 @@ const FileManagerPlugin = require('filemanager-webpack-plugin');
 const webpack = require('webpack');
 //const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const SriPlugin = require('webpack-subresource-integrity');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const outputDir = 'dist';
 const publicPath = '';
@@ -22,43 +21,29 @@ module.exports = merge(common, {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
-                use: [
-                    {
-                        loader: 'awesome-typescript-loader',
-                        options: {
-                            configFileName: tsConfig
-                        }
-                    }
-                ],
-                exclude: /node_modules/
-            },
-            {
                 test: /\.css$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: {
+                use: [
+                    'style-loader',
+                    {
                         loader: 'typings-for-css-modules-loader',
                         options: {
-                            modules: false,
-                            minimize: true
+                            modules: false
                         }
                     }
-                })
+                ]
             },
             {
                 test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: {
+                use: [
+                    'style-loader',
+                    {
                         loader: 'typings-for-css-modules-loader',
                         options: {
                             modules: false,
-                            sass: true,
-                            minimize: true
+                            sass: true
                         }
                     }
-                })
+                ]
             }
         ]
     },
@@ -73,17 +58,12 @@ module.exports = merge(common, {
                 ]
             }
         }),
-        new ExtractTextPlugin({
-            filename: '[name].bundle.min.css',
-            allChunks: true,
-            disable: false
-        }),
         // new UglifyJSPlugin({
         //     sourceMap: true
         // }),
-        new SriPlugin({
-            hashFuncNames: ['sha256', 'sha384']
-        }),
+        // new SriPlugin({
+        //     hashFuncNames: ['sha256', 'sha384']
+        // }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         })
