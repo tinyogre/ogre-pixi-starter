@@ -14,6 +14,7 @@ export class KeyboardSystem extends System {
     }
 
     onKeyDown(ev: KeyboardEvent) {
+        console.log(ev.keyCode);
         this.states.add(ev.keyCode);
     }
 

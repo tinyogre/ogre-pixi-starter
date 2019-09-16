@@ -35,10 +35,20 @@ export class PlayerSystem extends System {
     }
 
     update(deltaTime: number): void {
-        if (this.keyboard.isKeyDown(87)) {
-            let pc = this.player.get(PhysicsComponent);
-            let t = this.player.get(Transform);
+        let rotate: number = 0;
+        let pc = this.player.get(PhysicsComponent);
+        let t = this.player.get(Transform);
+        if (this.keyboard.isKeyDown(87, 38)) {
             pc.body.ApplyForce(PlayerSystem.rotate(new b2Vec2(0, -1000), t.rotation), pc.body.GetWorldCenter());
+        }
+        if (this.keyboard.isKeyDown(65, 37)) {
+            rotate -= 1;
+        }
+        if (this.keyboard.isKeyDown(68, 39)) {
+            rotate += 1;
+        }
+        if (rotate !== 0) {
+          pc.body.ApplyTorque(rotate * 1000);
         }
     }
 }
