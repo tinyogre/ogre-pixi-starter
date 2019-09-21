@@ -20,7 +20,7 @@ export class DebugRenderSystem extends System {
             let t = e.get(Transform);
             let drc = e.get(DebugRenderComponent);
             if (drc) {
-                drc.g.position = t.pos;
+                drc.g.position = new Point(t.pos.x - t.pivot.x, t.pos.y - t.pivot.y);
                 drc.g.rotation = t.rotation;
             }
         }

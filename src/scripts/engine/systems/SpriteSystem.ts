@@ -3,6 +3,7 @@ import { SpriteComponent } from "../components/SpriteComponent";
 import { Entity } from "../entity";
 import { Transform } from "../components/Transform";
 import { System } from "../System";
+import { Point } from "pixi.js";
 
 export class SpriteSystem extends System {
     static sname: "sprite";
@@ -13,7 +14,7 @@ export class SpriteSystem extends System {
             let s = e.get(SpriteComponent);
             if (s) {
                 let t = e.get(Transform);
-                s.sprite.position = t.pos;
+                s.sprite.position = new Point(t.pos.x - t.pivot.x, t.pos.y - t.pivot.y);
                 s.sprite.rotation = t.rotation;
             }
         })

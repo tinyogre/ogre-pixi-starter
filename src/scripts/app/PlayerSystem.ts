@@ -23,10 +23,11 @@ export class PlayerSystem extends System {
         var transform = this.player.add(Transform);
         transform.pos = new Point(160, 0);
         transform.rotation = 0;
+        transform.pivot = new Point(16, 16);
         physics.addBox(this.player, new Rectangle(0,0,32,32));
-        this.player.get(SpriteComponent).sprite = PIXI.Sprite.from('lander');
+        sprite.sprite = PIXI.Sprite.from('lander');
+        //sprite.sprite.pivot = transform.pivot;
         this.engine.app.stage.addChild(this.player.get(SpriteComponent).sprite);
-        
     }
 
     static rotate(v: b2Vec2, r: number): b2Vec2 {
@@ -50,5 +51,7 @@ export class PlayerSystem extends System {
         if (rotate !== 0) {
           pc.body.ApplyTorque(rotate * 1000);
         }
+
+        //this.engine.app.stage.position = new Point(-t.pos.x, -t.pos.y);
     }
 }

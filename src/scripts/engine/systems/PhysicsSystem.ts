@@ -28,7 +28,8 @@ export class PhysicsSystem extends System {
             var t = e.get(Transform);
             let b2pos = pc.body.GetPosition();
             let b2rotation = pc.body.GetAngle();
-            t.pos = this.unscalePoint(new Point(b2pos.x, b2pos.y));
+            let p = this.unscalePoint(new Point(b2pos.x, b2pos.y));
+            t.pos = new Point(p.x + t.pivot.x, p.y + t.pivot.y);
             t.rotation = b2rotation;
         }
     }
@@ -65,11 +66,12 @@ export class PhysicsSystem extends System {
         let box = new b2PolygonShape();
         let verts:XY[] = [
             {x: 0, y: 0},
-            {x: 0, y: r.height},
+            {x: r.width, y: 0},
             {x: r.width, y: r.height},
-            {x: r.width, y: 0}
+            {x: 0, y: r.height}
         ];
         box.Set(verts);
+        //box.SetAsBox(r.width/2, r.height/2, new b2Vec2(r.width / 2, r.height / 2));
         pc.bounds = this.unscaleRect(new PIXI.Rectangle(0, 0, r.width, r.height));
         let fd = new b2FixtureDef();
         fd.shape = box;
@@ -77,7 +79,7 @@ export class PhysicsSystem extends System {
         fd.friction = 0.3;
         pc.body.CreateFixture(fd);
         let tPos = this.scalePoint(t.pos);
-        pc.body.SetTransformXY((t.pos.x + r.x) * Config.physicsScale, (t.pos.y + r.y) * Config.physicsScale, t.rotation);
+        pc.body.SetTransformXY((t.pos.x + r.x - t.pivot.x) * Config.physicsScale, (t.pos.y + r.y - t.pivot.y) * Config.physicsScale, t.rotation);
     }
 
     createStatic(r: PIXI.Rectangle): Entity {
