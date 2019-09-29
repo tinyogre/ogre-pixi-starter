@@ -29,7 +29,7 @@ export class PhysicsSystem extends System {
             let b2pos = pc.body.GetPosition();
             let b2rotation = pc.body.GetAngle();
             let p = this.unscalePoint(new Point(b2pos.x, b2pos.y));
-            t.pos = new Point(p.x + t.pivot.x, p.y + t.pivot.y);
+            t.pos = new Point(p.x, p.y);
             t.rotation = b2rotation;
         }
     }
@@ -70,16 +70,26 @@ export class PhysicsSystem extends System {
             {x: r.width, y: r.height},
             {x: 0, y: r.height}
         ];
+        for(let v of verts) {
+            v.x += r.left;
+            v.y += r.top;
+        }
+        // let verts:XY[] = [
+        //     {x: 0, y: 0},
+        //     {x: r.width, y: 0},
+        //     {x: r.width, y: r.height},
+        //     {x: 0, y: r.height}
+        // ];
         box.Set(verts);
         //box.SetAsBox(r.width/2, r.height/2, new b2Vec2(r.width / 2, r.height / 2));
-        pc.bounds = this.unscaleRect(new PIXI.Rectangle(0, 0, r.width, r.height));
+        pc.bounds = this.unscaleRect(r); //this.unscaleRect(new PIXI.Rectangle(0, 0, r.width, r.height));
         let fd = new b2FixtureDef();
         fd.shape = box;
         fd.density = 1.0;
         fd.friction = 0.3;
-        pc.body.CreateFixture(fd);
+        let fixture = pc.body.CreateFixture(fd);
         let tPos = this.scalePoint(t.pos);
-        pc.body.SetTransformXY((t.pos.x + r.x - t.pivot.x) * Config.physicsScale, (t.pos.y + r.y - t.pivot.y) * Config.physicsScale, t.rotation);
+        pc.body.SetTransformXY((t.pos.x + pc.bounds.x) * Config.physicsScale, (t.pos.y + pc.bounds.y) * Config.physicsScale, t.rotation);
     }
 
     createStatic(r: PIXI.Rectangle): Entity {

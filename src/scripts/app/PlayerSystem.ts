@@ -23,9 +23,9 @@ export class PlayerSystem extends System {
         var transform = this.player.add(Transform);
         transform.pos = new Point(160, 0);
         transform.rotation = 0;
-        transform.pivot = new Point(16, 16);
-        physics.addBox(this.player, new Rectangle(0,0,32,32));
-        sprite.sprite = PIXI.Sprite.from('lander');
+        physics.addBox(this.player, new Rectangle(-16, -16, 32, 32));
+        sprite.Load('lander');
+        sprite.sprite.pivot = new Point(16, 16);
         //sprite.sprite.pivot = transform.pivot;
         this.engine.app.stage.addChild(this.player.get(SpriteComponent).sprite);
     }
@@ -52,6 +52,7 @@ export class PlayerSystem extends System {
           pc.body.ApplyTorque(rotate * 1000);
         }
 
-        //this.engine.app.stage.position = new Point(-t.pos.x, -t.pos.y);
+        console.log(t.pos.y);
+        this.engine.app.stage.position = new Point(-t.pos.x + 160, -t.pos.y + 120);
     }
 }

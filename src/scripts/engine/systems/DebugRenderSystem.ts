@@ -20,7 +20,7 @@ export class DebugRenderSystem extends System {
             let t = e.get(Transform);
             let drc = e.get(DebugRenderComponent);
             if (drc) {
-                drc.g.position = new Point(t.pos.x - t.pivot.x, t.pos.y - t.pivot.y);
+                drc.g.position = new Point(t.pos.x, t.pos.y);
                 drc.g.rotation = t.rotation;
             }
         }
@@ -35,7 +35,7 @@ export class DebugRenderSystem extends System {
         g.lineStyle(1, color);
         g.drawRect(ul.x, ul.y, size.x, size.y);
         g.lineStyle(1, 0xff0000);
-        g.drawRect(ul.x, ul.y, 1, 1);
+        g.drawRect(0, 0, 1, 1);
         dc.addToStage(this.stage);
     }
 

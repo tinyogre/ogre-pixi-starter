@@ -15,9 +15,10 @@ export class Engine {
 
     constructor(app: PixiAppWrapper) {
         this.app = app;
+        this.entityManager = new EntityManager(this);
     }
     
-    public entityManager: EntityManager = new EntityManager();
+    public entityManager: EntityManager;
 
     public update(deltaTime: number) {
         this.systems.forEach(s => s.update(deltaTime));
@@ -33,5 +34,8 @@ export class Engine {
 
     public get<T extends System>(type: ISystemType<T>) : T {
         return <T>this.systemMap.get(type.sname);
+    }
+    startGame() {
+        this.systems.forEach(s => s.startGame());
     }
 }

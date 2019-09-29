@@ -57,7 +57,7 @@ export class OgreLanderTestApp {
         console.log(physics.createStatic);
         let e = physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
 
-        this.engine.get(PlayerSystem).startGame();
+        this.engine.startGame();
         this.app.ticker.add((dt) => this.update(dt));
 
         let p = this.engine.get(PhysicsSystem);
