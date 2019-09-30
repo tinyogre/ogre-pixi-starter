@@ -52,7 +52,6 @@ export class PlayerSystem extends System {
           pc.body.ApplyTorque(rotate * 1000);
         }
 
-        console.log(t.pos.y);
         this.engine.app.stage.position = new Point(-t.pos.x + 160, -t.pos.y + 120);
     }
 }

@@ -5,7 +5,7 @@ import {
     PixiAppWrapperOptions as WrapperOpts,
 } from "../third_party/pixi-app-wrapper";
 import { PixiAssetsLoader, Asset, AssetPriority, SoundAsset, LoadAsset } from "../third_party/pixi-assets-loader";
-import { SCALE_MODES, Point, Rectangle } from "pixi.js";
+import { SCALE_MODES, Point, Rectangle, Sprite } from "pixi.js";
 import { Entity } from "../engine/entity";
 import { SpriteComponent } from "../engine/components/SpriteComponent";
 import { PhysicsSystem } from "../engine/systems/PhysicsSystem";
@@ -19,8 +19,11 @@ import { KeyboardSystem } from "../engine/systems/KeyboardSystem";
 export class OgreLanderTestApp {
     app: PixiAppWrapper;
     loader: PixiAssetsLoader;
+    splash_screen: Sprite;
 
     assets: Asset[] = [
+        {id: "splash_screen", url: "assets/gfx/splash_screen.png", priority: AssetPriority.HIGHEST, type: "texture" },
+        {id: "press_start_2p", url: "assets/fonts/PressStart2p.ttf", priority: AssetPriority.HIGHEST, type: "font" },
         {id: "lander", url: "assets/gfx/lander.png", priority: AssetPriority.HIGH, type: "texture"},
     ];
     sound: Howl;
@@ -53,8 +56,6 @@ export class OgreLanderTestApp {
 
     private startGame() {
         let physics:PhysicsSystem = this.engine.get(PhysicsSystem);
-        console.log(physics);
-        console.log(physics.createStatic);
         let e = physics.createStatic(new PIXI.Rectangle(0, 230, 320, 10));
 
         this.engine.startGame();
@@ -64,6 +65,19 @@ export class OgreLanderTestApp {
         if (p) {
             p.setDebug(true);
         }
+    }
+
+    private startMenu() {
+        this.splash_screen = PIXI.Sprite.from('splash_screen');
+        this.app.stage.addChild(this.splash_screen);
+        let text = new PIXI.Text("Loading...", {fontFamily: 'Press Start 2P', fontSize: 8, fill: 0xffffff, align: 'center'});
+        this.splash_screen.addChild(text);
+    }
+
+    private onMenuClick() {
+        this.app.renderer.plugins.interaction.removeAllListeners();
+        this.app.stage.removeChild(this.splash_screen);
+        this.startGame();
     }
 
     //The `randomInt` helper function
@@ -87,8 +101,12 @@ export class OgreLanderTestApp {
             }
         });
 
+        if (args.priority === AssetPriority.HIGHEST) {
+            this.startMenu();
+        }
         if (args.priority === AssetPriority.HIGH) {
-            this.startGame();
+            let fn = this.onMenuClick.bind(this);
+            this.app.renderer.plugins.interaction.on('pointerup', fn);
         }
     }
 }
