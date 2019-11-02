@@ -8,6 +8,7 @@ export interface IComponentType<T extends Component> {
 
 export class Entity {
     engine: Engine;
+    public debugName: string;
     public id: number;
     public get<T extends Component>(type: IComponentType<T>) : T {
         return <T>this.components.get(type.cname)
@@ -29,7 +30,11 @@ export class Entity {
         return c;
     }
     remove<T extends Component>(type: IComponentType<T>): void {
-        this.components.delete(type.cname);
+        let c = this.get(type);
+        if (c) {
+            c.onDelete();
+            this.components.delete(type.cname);
+        }
     }
 
 }

@@ -1,18 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ['Press Start 2P']
+            },
+            active: e => {
+                console.log("font loaded!");
+                // now start setting up your PixiJS (or canvas) stuff!
+            }
+        });
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- <script src="./pixi.js/dist/pixi.min.js"></script> -->
-    <title>ogre-pixi-starter</title>
+    <title>Ogre's Pixi.js starter project</title>
 </head>
 <body>
+    <H1 id="title">Pixi.js Starter Project</H1>
     <div id="app-root" class="stretch-width stretch-height">
         <div id="fps-meter"></div>
         <div id="media-info"></div>
         <canvas id="app-canvas"></canvas>
+        <div id="footer">
+            Copyright (c) 2019 Joe Rumsey<br>
+            Twitter: <a href="http://twitter.com/joerumz">@joerumz</a><br>
+            Blog: <a href="http://rumsey.org/">rumsey.org</a><br>
+            Source Code: <a href="https://github.com/tinyogre/ogre-pixi-starter">Github</a><br>
+            Made With: <a href="https://www.pixijs.com/">Pixi.js</a> and <a href="http://www.typescriptlang.org/">TypeScript</a><br>
+        </div>
     </div>
-</body>
 </html>
 

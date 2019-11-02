@@ -1,4 +1,5 @@
-import EventEmitter = require("eventemitter3");
+//import EventEmitter = require("eventemitter3");
+//import * as EventEmitter from "eventemitter3";
 import "fpsmeter";
 import {Dom, pixiAppWrapperEvent} from "./index";
 import * as PIXI from "pixi.js";
@@ -19,6 +20,7 @@ import {ScaleFullSize} from "./stage/scale/scale-full-size";
 import {ScaleKeepAspectRatio} from "./stage/scale/scale-keep-aspect-ratio";
 import {ScaleNone} from "./stage/scale/scale-none";
 import {ScaleStrategy} from "./stage/scale/scale-strategy";
+import { EventEmitter } from "events";
 
 export interface PixiAppWrapperOptions {
     width: number;
@@ -84,9 +86,7 @@ export class PixiAppWrapper extends EventEmitter {
         this.mediaInfoViewer = new MediaInfoViewer();
 
         this.app = new PIXI.Application(options);
-        document.body.appendChild(this.app.view);
-        this.app.stage = new PIXI.display.Stage();
-        //this.app.stage = new PIXI.display.Stage();
+        //document.body.appendChild(this.app.view);
 
         this.configure(options);
         this.ticker.add(this.resize.bind(this));
@@ -235,6 +235,11 @@ export class PixiAppWrapper extends EventEmitter {
         const width = Math.floor(this.view.clientWidth * multiplier);
         const height = Math.floor(this.view.clientHeight * multiplier);
 
+        // if (this.view.clientWidth < 1280) {
+        //     this.view.clientWidth = 640;
+        // } else {
+        //     this.view.clientWidth = 1280;
+        // }
         if (!this.resizing && (this.view.width !== width || this.view.height !== height)) {
             this.resizing = true;
 
